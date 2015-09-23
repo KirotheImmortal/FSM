@@ -39,25 +39,17 @@ public class QStates
     /// <summary>
     /// This State Name
     /// </summary>
-    public string sname;
+    public string s_name;
     /// <summary>
     /// State that this state can begin from
     /// </summary>
-    public string sprev;
+    public string s_prev;
 
     public delegate void VoidFunctionList();
     /// <summary>
     /// Delegates of void Function()
     /// </summary>
     public VoidFunctionList dv_stateFunctions;
-
-    public delegate IEnumerator IEnumeratorFunctionList();
-    /// <summary>
-    /// Delagates of IEnumerator Function()
-    /// </summary>
-    public IEnumeratorFunctionList die_stateFunctions;
-
-
 }
 
 /// <summary>
@@ -69,9 +61,14 @@ public class QStateMachine
     /// List of all the QStates
     /// </summary>
     List<QStates> ls_States = new List<QStates>();
+
+    /// <summary>
+    /// Used to store values of the Getter/Setters
+    /// </summary>
     private QStates cur;
     private QStates nex;
-
+    //////////////////////////////////////
+    
     /// <summary>
     /// State currently in.
     /// When Modified the state will play its delegates if delegates have functions stored
@@ -80,22 +77,18 @@ public class QStateMachine
     QStates current
     {
         get
-        { return cur; }
+        { return cur; }  //Returns Qstate cur
         set
         {
             cur = value;
-            if (current.dv_stateFunctions != null)
-                current.dv_stateFunctions();
-
-            if (current.die_stateFunctions != null)
-                current.die_stateFunctions();
-
+            if (current.dv_stateFunctions != null) // Checks to see if dv_stateFunctions of current is not null
+                current.dv_stateFunctions();        // Runs the dv_stateFunctions delegate
         }
     }
 
     public QStates currentState
         {
-        get { return cur; }
+        get { return cur; } //Returns the value in cur
         }
     /// <summary>
     /// State intended to change to. If allowed the current state will be changed to the value the nextState was changed to.
@@ -103,15 +96,15 @@ public class QStateMachine
     public QStates nextState
     {
         get
-        { return nex; }
+        { return nex; }  //Returns the value in QState nex
         set
         {
-            nex = value;
-            if (current == null)
-                current = value;
-            else if (current.sname == nex.sprev || nextState.sprev == null)
+            nex = value;           // sets nex to value
+            if (current == null)  //checks to see if current is null
+                current = value;   //Sets cukrrent to value
+            else if (current.s_name == nex.s_prev || nextState.s_prev == null) // Checks to see if the s_prev matches the current's s_name
             {
-                current = value;
+                current = value;                                             //Sets current to value
             }
 
         }
@@ -133,10 +126,10 @@ public class QStateMachine
     /// <param name="name"> Name assigned to QState</param>
     public void removeState(string name)
     {
-        foreach (QStates s in ls_States)
+        foreach (QStates s in ls_States) // Loops threw ls_States
         {
-            if (s.sname == name)
-                ls_States.Remove(s);
+            if (s.s_name == name)      //checks the s_name to the string passed in
+                ls_States.Remove(s);   // removes the QState
         }
     }
     /// <summary>
@@ -147,11 +140,11 @@ public class QStateMachine
     /// <param name="name"></param>
     public void changeState(string name)
     {
-        foreach (QStates s in ls_States)
-            if (s.sname == name)
+        foreach (QStates s in ls_States) // Loops threw ls_States
+            if (s.s_name == name)        // checks s_name to the string passed in
             {
-                nextState = s;
-                return;
+                nextState = s;          //  sets nextState to the s QState
+                return;                 //  returns
             }
     }
     /// <summary>
@@ -161,6 +154,7 @@ public class QStateMachine
     {
         ls_States.Clear();
     }
+
     /// <summary>
     /// Gtets the state using name variable.
     /// </summary>
@@ -168,11 +162,11 @@ public class QStateMachine
     /// <returns></returns>
     public QStates getState(string name)
     {
-        foreach (QStates s in ls_States)
-            if (s.sname == name)
-                return s;
+        foreach (QStates s in ls_States) //Loops threw ls_States
+            if (s.s_name == name)        //Checks the s_name to the string value passed in
+                return s;                //Returns the QState
 
-        return null;
+        return null;                    // returns null
 
     }
     //public addVoid()
